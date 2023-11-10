@@ -1,0 +1,30 @@
+// SPDX-License-Identifier: Unlicensed
+pragma solidity ^0.8.19;
+
+contract VotingSystem {
+    struct Proposal {
+        string description;
+        uint voteCount;
+    }
+
+    mapping(address => bool) public voters;
+    Proposal[] public proposals;
+
+    function createProposal(string memory description) public {
+        proposals.push(Proposal({
+            description: description,
+            voteCount: 0
+        }));
+    }
+
+    function vote(uint proposalIndex) public {
+        require(!voters[msg.sender], "You have already voted.");
+
+        voters[msg.sender] = true;
+        proposals[proposalIndex].voteCount += 1;
+    }
+
+    function getProposal(uint proposalIndex) public view returns (string memory description, uint voteCount) {
+        return (proposals[proposalIndex].description, proposals[proposalIndex].voteCount);
+    }
+}
