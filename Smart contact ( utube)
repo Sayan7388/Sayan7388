@@ -1,0 +1,47 @@
+// SPDX-License-Identifier: Unlicensed
+pragma solidity ^0.8.19;
+
+contract TubeToken {
+    mapping(address => uint) public balances;
+    uint public totalSupply;
+
+    constructor(uint _initialSupply) {
+        balances[msg.sender] = totalSupply = _initialSupply;
+    }
+
+    function transfer(address _to, uint _value) public {
+        require(balances[msg.sender] >= _value, "Not enough balance");
+        balances[msg.sender] -= _value;
+        balances[_to] += _value;
+    }
+
+    function balanceOf(address _owner) public view returns (uint balance) {
+        return balances[_owner];
+    }
+}
+
+contract YouTube {
+    struct Video {
+        string hash; // IPFS hash
+        string title;
+        address payable owner;
+        uint tips;
+    }
+
+    Video[] public videos;
+    TubeToken public tubeToken;
+
+    constructor(address _tubeToken) {
+        tubeToken = TubeToken(_tubeToken);
+    }
+
+    function uploadVideo(string memory _hash, string memory _title) public {
+        videos.push(Video(_hash, _title, payable(msg.sender), 0));
+    }
+
+    function tipCreator(uint _videoId) public {
+        Video storage video = videos[_videoId];
+        video.tips += 1;
+        tubeToken.transfer(video.owner, 1);
+    }
+}
