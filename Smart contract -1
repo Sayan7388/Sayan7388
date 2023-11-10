@@ -1,0 +1,46 @@
+// SPDX-License-Identifier: Unlicensed
+pragma solidity ^0.8.19;
+
+contract VeroToken {
+    mapping(address => uint) public balances;
+    uint public totalSupply;
+
+    constructor(uint _initialSupply) {
+        balances[msg.sender] = totalSupply = _initialSupply;
+    }
+
+    function transfer(address _to, uint _value) public {
+        require(balances[msg.sender] >= _value, "Not enough balance");
+        balances[msg.sender] -= _value;
+        balances[_to] += _value;
+    }
+
+    function balanceOf(address _owner) public view returns (uint balance) {
+        return balances[_owner];
+    }
+}
+
+contract Facebook {
+    struct Post {
+        string content;
+        address owner;
+        uint likes;
+    }
+
+    Post[] public posts;
+    VeroToken public veroToken;
+
+    constructor(address _veroToken) {
+        veroToken = VeroToken(_veroToken);
+    }
+
+    function createPost(string memory _content) public {
+        posts.push(Post(_content, msg.sender, 0));
+    }
+
+    function likePost(uint _postId) public {
+        Post storage post = posts[_postId];
+        post.likes += 1;
+        veroToken.transfer(post.owner, 1);
+    }
+}
