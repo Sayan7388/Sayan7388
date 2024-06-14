@@ -1,7 +1,7 @@
-- 👋 Hi, I’m @Sayan7388
+- 👋 Hi, I’m Sayan
 - 👀 I’m interested in ...
-- 🌱 I’m currently learning blockchain devs
-- 💞️ I’m looking to collaborate on devs
+- 🌱 I’m currently learning nothing 🔫
+- 💞️ I wanna travel the world 
 - 📫 How to reach me @Sayan738(twitter)
 
 <!---
